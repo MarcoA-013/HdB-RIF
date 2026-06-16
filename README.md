@@ -6,14 +6,22 @@
 
 ## Sobre o Projeto
 
-Este repositório documenta a análise forense do caso **Good Money Financial**, conduzida em ambiente de laboratório com duas VMs dedicadas. O caso envolve a investigação de uma infecção por **Emotet** (novembro de 2018) e a perícia do notebook de um suspeito (**Greg Schardt**) apreendido pela Delegacia de Crimes Cibernéticos.
+Este repositório reúne dois estudos de caso independentes de forense digital e resposta a incidentes, conduzidos em ambiente de laboratório com VMs dedicadas. Cada parte utiliza um conjunto diferente de evidências, ferramentas e contexto temporal — o fio condutor é a aplicação do método forense completo em ambos os cenários.
 
-O trabalho está dividido em duas partes independentes que compõem um ciclo completo de resposta a incidente:
+### Caso 1 — Infecção por Emotet (novembro de 2018)
+Análise de tráfego de rede capturado durante um incidente real de malware. O PCAP é proveniente do arquivo público **malware-traffic-analysis.net (CTF 2018-2-of-2)** e representa uma infecção por **Emotet** em uma estação da rede corporativa `kyivartworks.com`. O objetivo é identificar o ativo comprometido, o vetor de entrada, os IoCs de rede e o tipo de ameaça, produzindo um Relatório de CTI (Q1–Q5).
 
-| Parte | Ferramenta | VM | Foco |
-|-------|-----------|-----|------|
-| 1 | Zeek | `forenseLinux` — 192.168.98.10 | Análise de PCAP de rede (Emotet) |
-| 2 | Autopsy | `forenseWin` — 192.168.98.30 | Forense de disco (caso Schardt) |
+### Caso 2 — Perícia no notebook de Greg Schardt (2004)
+Análise de imagem de disco apreendida pela Delegacia de Crimes Cibernéticos. A imagem (`4Dell Latitude CPi.E01/E02`) é o dataset público **NIST CFREDS** e representa o notebook de um suspeito de crimes cibernéticos em uso no início dos anos 2000. O objetivo é extrair artefatos do sistema operacional Windows 98, identificar programas suspeitos e produzir um Laudo Pericial formal (Q6–Q10).
+
+> Os dois casos são **cronológica e factualmente independentes** — não há relação direta entre a rede `kyivartworks.com` (2018) e o suspeito Greg Schardt (2004). Ambos são utilizados para fins didáticos dentro do mesmo módulo de forense.
+
+O trabalho está dividido em duas partes que cobrem o ciclo completo de resposta a incidente:
+
+| Parte | Ferramenta | VM | Caso | Período |
+|-------|-----------|-----|------|---------|
+| 1 | Zeek | `forenseLinux` — 192.168.98.10 | Emotet — rede kyivartworks.com | Nov/2018 |
+| 2 | Autopsy | `forenseWin` — 192.168.98.30 | Perícia — notebook Greg Schardt | 2004 |
 
 ### Perguntas respondidas
 
