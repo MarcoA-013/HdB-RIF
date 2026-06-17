@@ -1,40 +1,93 @@
-# HdB-RIF — Hands-on Digital: Relatório de Incidente Forense
+# HdB-RIF — Relatório de Incidente Forense
+
+[![Publicar documentação](https://github.com/MarcoA-013/HdB-RIF/actions/workflows/deploy.yml/badge.svg)](https://github.com/MarcoA-013/HdB-RIF/actions/workflows/deploy.yml)
+[![MkDocs Material](https://img.shields.io/badge/docs-MkDocs%20Material-teal)](https://marcoa-013.github.io/HdB-RIF/)
+[![GitHub Pages](https://img.shields.io/badge/site-GitHub%20Pages-blue)](https://marcoa-013.github.io/HdB-RIF/)
+[![Licença](https://img.shields.io/badge/uso-educacional-green)](#)
 
 > Estudo de caso completo de resposta a incidente e forense digital, cobrindo análise de tráfego de rede com Zeek e análise de disco com Autopsy.
 
 ---
 
-## Sobre o Projeto
+## 📖 Documentação completa
 
-Este repositório reúne dois estudos de caso independentes de forense digital e resposta a incidentes, conduzidos em ambiente de laboratório com VMs dedicadas. Cada parte utiliza um conjunto diferente de evidências, ferramentas e contexto temporal — o fio condutor é a aplicação do método forense completo em ambos os cenários.
+**[marcoa-013.github.io/HdB-RIF](https://marcoa-013.github.io/HdB-RIF/)**
 
-### Caso 1 — Infecção por Emotet (novembro de 2018)
-Análise de tráfego de rede capturado durante um incidente real de malware. O PCAP é proveniente do arquivo público **malware-traffic-analysis.net (CTF 2018-2-of-2)** e representa uma infecção por **Emotet** em uma estação da rede corporativa `kyivartworks.com`. O objetivo é identificar o ativo comprometido, o vetor de entrada, os IoCs de rede e o tipo de ameaça, produzindo um Relatório de CTI (Q1–Q5).
+O site contém todas as análises com explicações didáticas, comandos comentados, interpretação dos resultados e referências técnicas — pensado para quem está iniciando em CTI e forense digital.
 
-### Caso 2 — Perícia no notebook de Greg Schardt (2004)
-Análise de imagem de disco apreendida pela Delegacia de Crimes Cibernéticos. A imagem (`4Dell Latitude CPi.E01/E02`) é o dataset público **NIST CFREDS** e representa o notebook de um suspeito de crimes cibernéticos em uso no início dos anos 2000. O objetivo é extrair artefatos do sistema operacional Windows 98, identificar programas suspeitos e produzir um Laudo Pericial formal (Q6–Q10).
+---
 
-> Os dois casos são **cronológica e factualmente independentes** — não há relação direta entre a rede `kyivartworks.com` (2018) e o suspeito Greg Schardt (2004). Ambos são utilizados para fins didáticos dentro do mesmo módulo de forense.
+## O que este projeto cobre
 
-O trabalho está dividido em duas partes que cobrem o ciclo completo de resposta a incidente:
+### Parte 1 — Análise de Rede com Zeek
+Análise de um PCAP capturado durante uma infecção real por **Emotet** (novembro de 2018). A evidência é proveniente do arquivo público [malware-traffic-analysis.net](https://www.malware-traffic-analysis.net/) (CTF 2018).
 
-| Parte | Ferramenta | VM | Caso | Período |
-|-------|-----------|-----|------|---------|
-| 1 | Zeek | `forenseLinux` — 192.168.98.10 | Emotet — rede kyivartworks.com | Nov/2018 |
-| 2 | Autopsy | `forenseWin` — 192.168.98.30 | Perícia — notebook Greg Schardt | 2004 |
+- Identificação do host comprometido via `dhcp.log`
+- Rastreamento do vetor de entrada via `http.log` e `files.log`
+- Análise do payload, módulo de spam e reconhecimento de Active Directory
+- Relatório CTI com IoCs, mapeamento MITRE ATT&CK e Cyber Kill Chain
 
-### Perguntas respondidas
+### Parte 2 — Análise Forense com Autopsy
+Perícia sobre uma imagem de disco apreendida pela Delegacia de Crimes Cibernéticos. A imagem é o dataset público [NIST CFREDS](https://cfreds.nist.gov/) — notebook Dell Latitude CPi, Windows 98, ~2004.
 
-**Parte 1 — Zeek (Q1–Q5)**
-- **Q1** MAC do cliente infectado
-- **Q2** Hostname do cliente infectado
-- **Q3** URL que entregou o documento Word malicioso
-- **Q4** Tipo de infecção identificada
-- **Q5** Relatório CTI com IoCs, MITRE ATT&CK e Kill Chain
+- Verificação de integridade da imagem (hash MD5)
+- Extração de artefatos do Windows (registro, histórico, programas executados)
+- Identificação de ferramentas ofensivas e evidências de uso
+- Construção de timeline forense
+- Laudo Pericial formal
 
-**Parte 2 — Autopsy (Q6–Q10)**
-- **Q6** Integridade da imagem (hash) e SO identificado
-- **Q7** Proprietário, conta, último desligamento e último logon
+---
+
+## Estrutura do repositório
+
+```
+HdB-RIF/
+├── docs/                  ← fonte do site (Markdown)
+│   ├── contexto/          ← Emotet, Greg Schardt, visão geral do caso
+│   ├── ambiente/          ← configuração do lab (Zeek + Autopsy)
+│   ├── parte1/            ← Q1–Q5 com comandos e interpretação
+│   ├── parte2/            ← Q6–Q10 com comandos e interpretação
+│   └── referencias/       ← MITRE ATT&CK, legislação, glossário
+├── parte1_zeek/           ← IoCs exportados e logs de sessão
+├── parte2_autopsy/        ← CSVs exportados do Autopsy (web history, timeline...)
+├── roteiros/              ← roteiros de análise e melhorias
+├── mkdocs.yml             ← configuração do site
+└── requirements.txt       ← dependências Python
+```
+
+---
+
+## Ferramentas utilizadas
+
+| Ferramenta | Versão | Uso |
+|---|---|---|
+| Zeek | 6.0.4 | Análise de PCAP — `forenseLinux` |
+| Autopsy | 4.21.0 | Análise forense de disco — `forenseWin` |
+| MkDocs Material | 9.x | Documentação do projeto |
+
+---
+
+## Como rodar o site localmente
+
+```bash
+pip install -r requirements.txt
+mkdocs serve
+# Acesse http://localhost:8000
+```
+
+---
+
+## Aviso
+
+As evidências utilizadas neste projeto são dados públicos disponibilizados para fins educacionais:
+- PCAP: [malware-traffic-analysis.net](https://www.malware-traffic-analysis.net/) — créditos a Brad Duncan
+- Imagem de disco: [NIST CFREDS](https://cfreds.nist.gov/)
+
+Todo o conteúdo é disponibilizado para fins educacionais.
+
+---
+
+*por [@MarcoA-013](https://github.com/MarcoA-013)*- **Q7** Proprietário, conta, último desligamento e último logon
 - **Q8** Programas suspeitos e arquivos na lixeira
 - **Q9** Timeline das evidências
 - **Q10** Laudo pericial formal
